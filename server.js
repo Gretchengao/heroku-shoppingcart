@@ -385,8 +385,12 @@ app.get('/logout',function(req,res){
 app.get('/checkout', function(req, res) {
     res.sendfile("checkout.html");
 });
-
-app.listen(port,function(){
+/*
+app.listen(app.get('port'),function(){
   console.log("Started on PORT 8080");
+})
+*/
+app.listen(app.get('port'), function() {
+  console.log("Node app is running at localhost:" + app.get('port'))
 })
 
