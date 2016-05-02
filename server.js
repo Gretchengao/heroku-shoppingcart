@@ -393,7 +393,7 @@ app.listen(app.get('port'),function(){
 })
 */
 
-app.listen(server_port, server_host, function() {
-    	console.log("listening..");
-	console.log('Listening on port %d', server_port);
-});
+
+app.listen(process.env.PORT || 3000, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+})
