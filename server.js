@@ -38,7 +38,7 @@ function PutCode(url, data) {
 app.engine('html',require('ejs').renderFile);
 app.set('views',path.join(__dirname ));
 app.use(express.static(__dirname + '/public'));
-
+app.set('port', (process.env.PORT || 8080))
 
 var pool    =   mysql.createPool({
     connectionLimit : 100,
@@ -386,7 +386,7 @@ app.get('/checkout', function(req, res) {
     res.sendfile("checkout.html");
 });
 
-app.listen(8080,function(){
+app.listen(port,function(){
   console.log("Started on PORT 8080");
 })
 
