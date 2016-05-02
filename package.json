@@ -1,6 +1,9 @@
 {
   "name": "heroku-shoppingcart",
-  "version": "0.0.0",
+  "engines": {
+  "node": "0.10.25",
+  "npm": "1.3.10"
+   }
   "description": "Shopping cart app",
   "main": "server.js",
   "dependencies": {
