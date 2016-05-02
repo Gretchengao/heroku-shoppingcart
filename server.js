@@ -38,7 +38,8 @@ function PutCode(url, data) {
 app.engine('html',require('ejs').renderFile);
 app.set('views',path.join(__dirname ));
 app.use(express.static(__dirname + '/public'));
-app.set('port', (process.env.PORT || 8080))
+var server_port = process.env.YOUR_PORT || process.env.PORT || 8080;
+var server_host = process.env.YOUR_HOST || '0.0.0.0';
 
 var pool    =   mysql.createPool({
     connectionLimit : 100,
@@ -391,7 +392,7 @@ app.listen(app.get('port'),function(){
   console.log("Started on PORT 8080");
 })
 */
-app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'))
-})
 
+server.listen(server_port, server_host, function() {
+    console.log('Listening on port %d', server_port);
+});
