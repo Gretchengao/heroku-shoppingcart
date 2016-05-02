@@ -1,0 +1,24 @@
+{
+  "name": "shoppingcart",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Sandhya",
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "express": "^4.13.4",
+    "express-session": "^1.13.0"
+  },
+  "devDependencies": {},
+  "description": "Shopping cart app",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sandhya123r/heroku-shoppingcart.git"
+  },
+  "bugs": {
+    "url": "https://github.com/sandhya123r/heroku-shoppingcart/issues"
+  }
+}

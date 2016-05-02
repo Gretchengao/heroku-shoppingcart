@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>PhotoGrid</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<div class="contianer" align="center" style="background-color: #080427">
+	<div class="topDeck">
+		<div class="logo">
+		<font color="white">
+			<h1>Upload your picture</h1>
+		</font>
+		</div>
+		<div class="controls" >
+			<font color="white">
+				<form action="/upload" method="post" enctype="multipart/form-data">
+				<input type="file" name="upload" required="">
+				<br>
+				<input type="submit" value="Upload" name="submit" />
+				</form>
+			</font>
+		</div>
+	</div>
+</div>
+</body>
+</html>
