@@ -393,6 +393,7 @@ app.listen(app.get('port'),function(){
 })
 */
 
-server.listen(server_port, server_host, function() {
-    console.log('Listening on port %d', server_port);
+app.listen(server_port, server_host, function() {
+    	console.log("listening..");
+	console.log('Listening on port %d', server_port);
 });
