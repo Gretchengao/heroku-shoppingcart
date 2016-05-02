@@ -131,7 +131,8 @@ function handle_database(req,type,callback) {
 
 
 app.get('/',function(req,res){
-    res.sendfile("index.html");
+    	res.send("Hello world");
+	//res.sendfile("index.html");
 });
 
 app.post('/login.html',function(req,res){
