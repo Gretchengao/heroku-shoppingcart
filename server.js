@@ -8,7 +8,7 @@ var redisStore      =     require('connect-redis')(session);
 var cookieParser    =     require('cookie-parser');
 var path            =     require("path");
 var async           =     require("async");
-var client          =   redis.createClient();
+var client          =   redis.createClient(6379,"ec2-52-200-66-11.compute-1.amazonaws.com");
 var router          =     express.Router();
 var Client      =   require('node-rest-client').Client;
 var http            =   require('http');
@@ -132,8 +132,7 @@ function handle_database(req,type,callback) {
 
 
 app.get('/',function(req,res){
-    	res.send("Hello world");
-	//res.sendfile("index.html");
+	res.sendfile("index.html");
 });
 
 app.post('/login.html',function(req,res){
