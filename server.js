@@ -53,9 +53,12 @@ var pool    =   mysql.createPool({
 app.use(session({
         secret: 'ssshhhhh',
         store: new redisStore({ host: 'ec2-52-200-66-11.compute-1.amazonaws.com', port: 6379, client: client,ttl :  260}),
-        saveUninitialized: false,
+        duration: 30 * 60 * 1000,
+  	activeDuration: 5 * 60 * 1000,
+	saveUninitialized: false,
         resave: false
 }));
+
 app.use(cookieParser("secretSign#143_!223"));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -278,10 +281,6 @@ app.post('/product-details.html',function(req,res){
 	res.redirect("/cart.html");
 });
 
-app.get('/checkout.html',function(req,res){
-    res.sendfile("checkout.html");
-});
-
 app.get('/login.html',function(req,res){
     res.sendfile("login.html");
     //res.json({"error":true, "message":"test msg"});
@@ -375,17 +374,46 @@ app.get('/logout',function(req,res){
             'cart_to_display': req.session.key["cart_to_display"]
         }
         PutCode(backendUrl, data_to_send);
-        req.session.destroy(function(){
-        res.redirect('/');
+        req.session.destroy(function(err){
+	if (err) {
+		console.log(err);
+	} else {
+       		 res.redirect('/');
+	}
     });
     } else {
         res.redirect('/');
     }
 });
 
-app.get('/checkout', function(req, res) {
-    res.sendfile("checkout.html");
+app.get('/checkout.html', function(req, res) {
+    res.render("checkout.html",{email : req.session.key["name"]});
 });
+
+app.post('/checkout.html', function(req, res) {
+        res.redirect("success.html");
+	
+});
+
+app.get('/success.html',function(req,res){
+	res.render("success.html",{email:req.session.key["name"]});	
+});
+
+app.post('/success.html', function(req, res) {
+       	var backendUrl = endpoint + req.session.key["email"] + "/cart";
+        var data_to_send = {
+            'items': {},
+            'cart_to_display': []
+        }
+	console.log("SUCCESS URL CHANGE :",data_to_send);
+        PutCode(backendUrl, data_to_send);
+	res.redirect(req.body['logout'] + ".html");
+});
+
+app.get('/logout.html',function(req,res){
+        res.redirect('/');
+});
+
 /*
 app.listen(app.get('port'),function(){
   console.log("Started on PORT 8080");
