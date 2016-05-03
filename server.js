@@ -137,6 +137,10 @@ app.get('/',function(req,res){
 	res.sendfile("index.html");
 });
 
+app.get('/index.html',function(req,res){
+	res.sendfile("index.html");
+})
+
 app.post('/login.html',function(req,res){
     console.log("coming into post");
     handle_database(req, "login",function(response){
