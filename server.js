@@ -53,8 +53,8 @@ app.use(session({
         secret: 'ssshhhhh',
         store: new redisStore({ host: 'ec2-52-200-66-11.compute-1.amazonaws.com', port: 6379, client: client,ttl :  260}),
         duration: 30 * 60 * 1000,
-  	activeDuration: 5 * 60 * 1000,
-	saveUninitialized: false,
+        activeDuration: 5 * 60 * 1000,
+        saveUninitialized: false,
         resave: false
 }));
 
@@ -341,6 +341,7 @@ app.get('/cart.html',function(req,res){
     console.log('Going to send this::');
     console.log(dict_to_send);
     req.session.key["cart_to_display"] = dict_to_send
+    req.session.key["cart"]["total_price"] = total_price 
     final_dict = {
         items_in_cart: dict_to_send,
         email: req.session.key["name"],
@@ -387,7 +388,7 @@ app.get('/logout',function(req,res){
 });
 
 app.get('/checkout.html', function(req, res) {
-    res.render("checkout.html",{email : req.session.key["name"]});
+    res.render("checkout.html",{email : req.session.key["name"], total: req.session.key["cart"]["total_price"]});
 });
 
 app.post('/checkout.html', function(req, res) {
