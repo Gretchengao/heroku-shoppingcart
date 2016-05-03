@@ -177,6 +177,7 @@ app.post('/login.html',function(req,res){
                             var products = newString['products']
                             if (typeof products === "undefined") newString['products'] = {}
 
+                            req.session = 'x9jCImbWhuis8DXALVHDtXiQrnQvlTMa';
                             req.session.key = newString;
                             res.redirect("/shop.html");
                             console.log("SESSION KEY is set to : ",req.session.key)
