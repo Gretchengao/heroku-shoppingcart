@@ -405,9 +405,11 @@ app.post('/success.html', function(req, res) {
             'items': {},
             'cart_to_display': []
         }
-	console.log("SUCCESS URL CHANGE :",data_to_send);
+        console.log("SUCCESS URL CHANGE :",data_to_send);
         PutCode(backendUrl, data_to_send);
-	res.redirect(req.body['logout'] + ".html");
+        req.session.key["cart"]["items"] = {}
+        req.session.key["cart_to_display"] = []
+        res.redirect(req.body['logout'] + ".html");
 });
 
 app.get('/logout.html',function(req,res){
