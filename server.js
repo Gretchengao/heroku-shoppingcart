@@ -12,7 +12,6 @@ var client          =   redis.createClient(6379,"ec2-52-200-66-11.compute-1.amaz
 var router          =     express.Router();
 var Client      =   require('node-rest-client').Client;
 var http            =   require('http');
-var fullString = '';
 var mysql   = require('mysql');
 var MongoClient = require('mongodb').MongoClient;
 var assert  = require('assert');
@@ -156,6 +155,7 @@ app.post('/login.html',function(req,res){
                 var email =req.body.email
                 var  url = endpoint+email
                 var newString = '';
+                var fullString = '';
 
                 cart_callback = function(response) {
                         response.on('data', function(data) {
