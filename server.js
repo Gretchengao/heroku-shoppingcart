@@ -94,7 +94,9 @@ app.use(session({
 app.use(cookieParser("secretSign#143_!223"));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-var endpoint = "http://ec2-50-16-165-69.compute-1.amazonaws.com:8080/customers/"
+
+//backend machine - var endpoint = "http://ec2-50-16-165-69.compute-1.amazonaws.com:8080/customers/"
+var endpoint = "http://team5-elb-193492119.us-east-1.elb.amazonaws.com/customers/"
 
 function handle_database(req,type,callback) {
     async.waterfall([
@@ -436,11 +438,7 @@ app.post('/checkout.html', function(req, res) {
 });
 
 app.get('/success.html',function(req,res){
-	res.render("success.html",{email:req.session.key["name"]});	
-});
-
-app.post('/success.html', function(req, res) {
-       	var backendUrl = endpoint + req.session.key["email"] + "/cart";
+        var backendUrl = endpoint + req.session.key["email"] + "/cart";
         var data_to_send = {
             'items': {},
             'cart_to_display': []
@@ -449,7 +447,24 @@ app.post('/success.html', function(req, res) {
         PutCode(backendUrl, data_to_send);
         req.session.key["cart"]["items"] = {}
         req.session.key["cart_to_display"] = []
-        res.redirect(req.body['logout'] + ".html");
+        res.render("success.html",{email:req.session.key["name"]});		
+});
+
+app.post('/success.html', function(req, res) {
+	/* Noticed that the below change should happen while "get" 
+	of success.html happens and not while post
+	       
+	var backendUrl = endpoint + req.session.key["email"] + "/cart";
+        var data_to_send = {
+            'items': {},
+            'cart_to_display': []
+        }
+        console.log("SUCCESS URL CHANGE :",data_to_send);
+        PutCode(backendUrl, data_to_send);
+        req.session.key["cart"]["items"] = {}
+        req.session.key["cart_to_display"] = []
+        */
+	res.redirect(req.body['logout'] + ".html");
 });
 
 app.get('/logout.html',function(req,res){
