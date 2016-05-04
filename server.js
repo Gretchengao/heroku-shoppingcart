@@ -37,7 +37,7 @@ function PutCode(url, data) {
 app.engine('html',require('ejs').renderFile);
 app.set('views',path.join(__dirname ));
 app.use(express.static(__dirname + '/public'));
-var server_port = process.env.YOUR_PORT || process.env.PORT || 8080;
+var server_port = process.env.YOUR_PORT || process.env.PORT || 3000;
 var server_host = process.env.YOUR_HOST || '0.0.0.0';
 
 var pool    =   mysql.createPool({
@@ -176,8 +176,9 @@ app.post('/login.html',function(req,res){
                             // we want to have a fields called products to store mongo catalog and cart_to_display for everyone
                             var products = newString['products']
                             if (typeof products === "undefined") newString['products'] = {}
-
-                            req.session = 'x9jCImbWhuis8DXALVHDtXiQrnQvlTMa';
+                            console.log(typeof req.session);
+                            console.log(req.session);
+                            //req.session = 'x9jCImbWhuis8DXALVHDtXiQrnQvlTMa';
                             req.session.key = newString;
                             res.redirect("/shop.html");
                             console.log("SESSION KEY is set to : ",req.session.key)
