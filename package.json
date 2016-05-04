@@ -20,7 +20,8 @@
     "ejs": "~2.4.1",
     "forever": "~0.15.1",
     "async": "~2.0.0-rc.3",
-    "request": "~2.72.0"
+    "request": "~2.72.0",
+    "node-redis-failover": "~0.2.5"
   },
   "devDependencies": {},
   "scripts": {

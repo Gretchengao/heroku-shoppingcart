@@ -8,17 +8,18 @@ var redisStore      =     require('connect-redis')(session);
 var cookieParser    =     require('cookie-parser');
 var path            =     require("path");
 var async           =     require("async");
-var client          =   redis.createClient(6379,"ec2-52-200-66-11.compute-1.amazonaws.com");
 var router          =     express.Router();
 var Client      =   require('node-rest-client').Client;
 var http            =   require('http');
 var mysql   = require('mysql');
+var client          =   redis.createClient(6379,"54.208.161.191");
 var MongoClient = require('mongodb').MongoClient;
 var assert  = require('assert');
 var ObjectId    = require('mongodb').ObjectID;
 var changeCase  =  require("change-case");
 var url     = 'mongodb://ec2-52-200-66-11.compute-1.amazonaws.com:27017/rest_test';
 var request = require('request');
+var redisFailover = require('node-redis-failover');
 
 
 function PutCode(url, data) {
@@ -31,6 +32,36 @@ function PutCode(url, data) {
     request(opts, function (err, resp, body) {
     })
 }
+
+//Failover code
+var zookeeper = {
+  servers: 'ec2-52-200-66-11.compute-1.amazonaws.com::2181',
+  //chroot: '/appName'
+};
+
+var redis = redisFailover.createClient(zookeeper);
+
+redis.on('ready', function() {
+  // get the master client of 'node_1' (default master) 
+  redis.getClient('node_1').ping(function(err, info) {
+    console.log(info);
+    client = redis.getClient('node_1','master');
+  });
+
+});
+
+redis.on('change', function(name, state) {
+  console.log('redis %s state changed, %j', name, state);
+});
+
+redis.on('masterChange', function(name, state) {
+  client = redis.getClient('node_1','master');
+  console.log('%s master changed, %s', name, state);
+});
+
+
+
+
 
 //app.use(bodyParser.urlencoded({ extended: false }));
 //app.use(bodyParser.json());
@@ -51,12 +82,14 @@ var pool    =   mysql.createPool({
 
 app.use(session({
         secret: 'ssshhhhh',
-        store: new redisStore({ host: 'ec2-52-200-66-11.compute-1.amazonaws.com', port: 6379, client: client,ttl :  260}),
+        store: new redisStore({client:client,ttl :  260}),
         duration: 30 * 60 * 1000,
         activeDuration: 5 * 60 * 1000,
         saveUninitialized: false,
         resave: false
 }));
+
+
 
 app.use(cookieParser("secretSign#143_!223"));
 app.use(bodyParser.urlencoded({extended: false}));
