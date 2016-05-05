@@ -363,7 +363,7 @@ app.get('/cart.html',function(req,res){
     for (var key in items_in_cart) {
         console.log("trying to process key: ", key);
         var count = items_in_cart[key];
-        var product = products[key]
+	var product = products[key]
         if (typeof product === "undefined") {
             product = search_in_list(items_in_cart_to_display, key)
         }
@@ -375,7 +375,7 @@ app.get('/cart.html',function(req,res){
             'id': product["id"],
             'image': product["image"],
             'qty': count,
-            'item_total': count * parseFloat(product['price'])
+            'item_total': (count * parseFloat(product['price'])).toFixed(2)
         });
         total_price += count * parseFloat(product['price']);
     }
@@ -386,7 +386,7 @@ app.get('/cart.html',function(req,res){
     final_dict = {
         items_in_cart: dict_to_send,
         email: req.session.key["name"],
-        total: total_price,
+        total: total_price.toFixed(2),
     }
     res.render('cart.ejs', {
         //jsonData: JSON.stringify(final_dict)
@@ -396,7 +396,18 @@ app.get('/cart.html',function(req,res){
 });
 
 app.post('/cart.html', function(req, res) {
-	res.redirect(req.body['checkout'] + ".html");
+	console.log("delete is", req.body['delete']);
+	if(req.body['delete']) {
+		console.log("delete", req.body['delete']);
+		var choc = req.body['delete'];
+		console.log(req.session.key['cart']['items']);
+		delete req.session.key['cart']['items'][req.body['delete']];
+		console.log(req.session.key['cart']['items']);
+		res.redirect("cart.html");
+		
+	} else {
+		res.redirect(req.body['checkout'] + ".html");
+	}
 });
 
 app.get('/dummy.html',function(req,res){
@@ -410,7 +421,8 @@ app.get('/404.html',function(req,res){
 
 app.get('/logout',function(req,res){
     if(req.session.key) {
-        var backendUrl = endpoint + req.session.key["email"] + "/cart";
+        console.log("********************************Logging out *******************");
+	var backendUrl = endpoint + req.session.key["email"] + "/cart";
         var data_to_send = {
             'items': req.session.key["cart"]["items"],
             'cart_to_display': req.session.key["cart_to_display"]
@@ -438,22 +450,8 @@ app.post('/checkout.html', function(req, res) {
 });
 
 app.get('/success.html',function(req,res){
-        var backendUrl = endpoint + req.session.key["email"] + "/cart";
-        var data_to_send = {
-            'items': {},
-            'cart_to_display': []
-        }
-        console.log("SUCCESS URL CHANGE :",data_to_send);
-        PutCode(backendUrl, data_to_send);
-        req.session.key["cart"]["items"] = {}
-        req.session.key["cart_to_display"] = []
-        res.render("success.html",{email:req.session.key["name"]});		
-});
-
-app.post('/success.html', function(req, res) {
-	/* Noticed that the below change should happen while "get" 
-	of success.html happens and not while post
-	       
+        
+	/*
 	var backendUrl = endpoint + req.session.key["email"] + "/cart";
         var data_to_send = {
             'items': {},
@@ -461,9 +459,14 @@ app.post('/success.html', function(req, res) {
         }
         console.log("SUCCESS URL CHANGE :",data_to_send);
         PutCode(backendUrl, data_to_send);
-        req.session.key["cart"]["items"] = {}
-        req.session.key["cart_to_display"] = []
         */
+	req.session.key["cart"]["items"] = {}
+        req.session.key["cart_to_display"] = []
+        
+	res.render("success.html",{email:req.session.key["name"]});		
+});
+
+app.post('/success.html', function(req, res) {
 	res.redirect(req.body['logout'] + ".html");
 });
 

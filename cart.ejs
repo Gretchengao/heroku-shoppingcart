@@ -128,6 +128,11 @@
                                 <td class="cart_total">
                                     <p class="cart_total_price"><%= jsonData.items_in_cart[i].item_total %></p>
                                 </td>
+			        <td class="cart_delete">
+				 <form method = "post">
+					<button type="submit" class="cart_quantity_delete" name="delete" value = "<%= jsonData.items_in_cart[i].name%>" > Remove </a>
+				 </form>
+			       </td>
                             </tr>
                         <% } %>
 					</tbody>
