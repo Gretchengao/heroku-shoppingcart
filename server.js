@@ -377,12 +377,12 @@ app.get('/cart.html',function(req,res){
             'qty': count,
             'item_total': (count * parseFloat(product['price'])).toFixed(2)
         });
-        total_price += count * parseFloat(product['price']);
+        total_price += (count * parseFloat(product['price'])).toFixed(2);
     }
     console.log('Going to send this::');
     console.log(dict_to_send);
     req.session.key["cart_to_display"] = dict_to_send
-    req.session.key["cart"]["total_price"] = total_price 
+    req.session.key["cart"]["total_price"] = total_price.toFixed(2); 
     final_dict = {
         items_in_cart: dict_to_send,
         email: req.session.key["name"],
