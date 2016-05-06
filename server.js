@@ -426,6 +426,7 @@ app.get('/logout',function(req,res){
             'items': req.session.key["cart"]["items"],
             'cart_to_display': req.session.key["cart_to_display"]
         }
+	
         PutCode(backendUrl, data_to_send);
         req.session.destroy(function(err){
 	if (err) {
@@ -450,7 +451,7 @@ app.post('/checkout.html', function(req, res) {
 
 app.get('/success.html',function(req,res){
         
-	/*
+	
 	var backendUrl = endpoint + req.session.key["email"] + "/cart";
         var data_to_send = {
             'items': {},
@@ -458,7 +459,7 @@ app.get('/success.html',function(req,res){
         }
         console.log("SUCCESS URL CHANGE :",data_to_send);
         PutCode(backendUrl, data_to_send);
-        */
+        
 	req.session.key["cart"]["items"] = {}
         req.session.key["cart_to_display"] = []
         
