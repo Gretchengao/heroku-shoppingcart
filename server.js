@@ -480,6 +480,10 @@ app.listen(app.get('port'),function(){
 })
 */
 
+app.get('/benchmark.html',function(req,res){
+	var image_location = "./images/redis-vs-mongo.png";
+	res.sendfile("benchmark.html");
+});
 
 app.listen(process.env.PORT || 3000, function(){
   console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
